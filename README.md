@@ -1,0 +1,49 @@
+# AI Competitor Intelligence Agent
+
+An AI agent for competitive intelligence — cross-cutting audits combining SEO, ads, social, and review data into one competitor-vs-client comparison — backed by real data APIs.
+
+Part of [Agency Agents OS](https://github.com/Anil-matcha/agency-agents-os), an open ecosystem of specialized AI agents for real business work.
+
+## What this covers
+
+This repo is the umbrella for anything an agency or in-house team would call "the competitor intelligence agent": pulling a competitor's SEO position, ad activity, social presence, and review/reputation signals into a single comparison report against the client, rather than checking each channel by hand. It deliberately cross-cuts other umbrellas — `ai-seo-agent`, `ai-ads-agent`, `ai-social-agent`, `ai-reputation-agent` — pulling one signal from each into a combined view instead of duplicating any of their individual capabilities.
+
+## Sub-agents
+
+| Agent | Does | Status |
+|---|---|---|
+| [Competitive Audit](agents/competitive-audit/SKILL.md) | Cross-cutting audit of a competitor combining SEO position, social presence, and review/reputation signals into one comparison report against the client | Coming Soon |
+| [Ad Library Mining](agents/ad-library-mining/SKILL.md) | Analyzes which ads a competitor is actively running — creative, messaging, and longevity as a signal of what's working | Coming Soon |
+
+## Required Muapi APIs
+
+- `seo.search_performance` — competitor and client organic search position/ranking signals (see [`ai-seo-agent`](https://github.com/SamurAIGPT/ai-seo-agent)).
+- `ads.ad_library_search` — public ad-library-style lookup of a competitor's actively running ads (see [`ai-ads-agent`](https://github.com/SamurAIGPT/ai-ads-agent)).
+- `social.read_posts` — competitor and client social account activity and engagement (see [`ai-social-agent`](https://github.com/SamurAIGPT/ai-social-agent)).
+- `reputation.review_search` — competitor and client review/reputation signals across public review sources (see [`ai-reputation-agent`](https://github.com/SamurAIGPT/ai-reputation-agent)).
+
+These capabilities are shared with the sibling umbrella repos above; this repo's sub-agents combine them into cross-channel comparison reports rather than owning any one channel.
+
+See each sub-agent's `SKILL.md` for the specific capabilities it uses.
+
+## Setup
+
+1. Create a Muapi account and API key at [muapi.ai](https://muapi.ai).
+2. Review the [Muapi API quickstart](https://muapi.ai) and [OpenAPI schema](https://api.muapi.ai/openapi.json) for the relevant endpoints.
+3. Load the `SKILL.md` for the sub-agent you need into your agent runtime (hosted agent, MCP client, or custom LLM app), or follow it manually.
+
+## Read-only vs. write actions
+
+Both sub-agents are `read-only` — they gather and compare public signals into a report. Neither publishes, files a complaint, responds to a review, or takes any action on a competitor's or client's own accounts.
+
+## Status and limitations
+
+Both sub-agents are Coming Soon. Each depends on the same non-media APIs (`seo.search_performance`, `ads.ad_library_search`, `social.read_posts`, `reputation.review_search`) that the sibling umbrellas — `ai-seo-agent`, `ai-ads-agent`, `ai-social-agent`, `ai-reputation-agent` — also need before they can go live. This repo will move to Blueprint/Live once those underlying capabilities are available on Muapi.
+
+## Contributing
+
+See [Agency Agents OS CONTRIBUTING.md](https://github.com/Anil-matcha/agency-agents-os/blob/main/CONTRIBUTING.md).
+
+## License
+
+[MIT](LICENSE)

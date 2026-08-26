@@ -4,6 +4,16 @@ An AI agent for competitive intelligence — cross-cutting audits combining SEO,
 
 Part of [Agency Agents OS](https://github.com/Anil-matcha/agency-agents-os), an open ecosystem of specialized AI agents for real business work.
 
+## Related Projects
+
+- [Agency Agents OS](https://github.com/Anil-matcha/agency-agents-os) — the central catalog this repo is part of.
+- [ai-seo-agent](https://github.com/SamurAIGPT/ai-seo-agent) — supplies the live domain/backlink data this repo's competitive-audit sub-agent cross-cuts.
+- [ai-ads-agent](https://github.com/SamurAIGPT/ai-ads-agent) — shares this repo's ad-library-mining capability.
+- [ai-social-agent](https://github.com/SamurAIGPT/ai-social-agent) — feeds the social-presence side of a competitive audit.
+- [ai-reputation-agent](https://github.com/SamurAIGPT/ai-reputation-agent) — feeds the review/sentiment side of a competitive audit.
+- [MuAPI MCP docs](https://muapi.ai/docs/mcp) — connect this repo's `SKILL.md` files via MCP.
+- [MuAPI access keys](https://muapi.ai/access-keys) — create the API key this agent needs.
+
 ## What this covers
 
 This repo is the umbrella for anything an agency or in-house team would call "the competitor intelligence agent": pulling a competitor's SEO position, ad activity, social presence, and review/reputation signals into a single comparison report against the client, rather than checking each channel by hand. It deliberately cross-cuts other umbrellas — `ai-seo-agent`, `ai-ads-agent`, `ai-social-agent`, `ai-reputation-agent` — pulling one signal from each into a combined view instead of duplicating any of their individual capabilities.

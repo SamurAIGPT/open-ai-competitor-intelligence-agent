@@ -4,7 +4,7 @@ slug: ad-library-mining
 version: 1.0.0
 category: competitor-intelligence
 description: Analyzes which ads a competitor is actively running — creative, messaging, and longevity — as a signal of what's working for them.
-status: coming-soon
+status: blueprint
 muapi_capabilities:
   - ads.ad_library_search
 required_connections:
@@ -34,13 +34,13 @@ Surface what a named competitor is actively spending on in paid advertising — 
 
 ## Required connections
 
-- `muapi` — Muapi account and API key with access to `ads.ad_library_search`, once live.
+- `muapi` — Muapi account and API key with access to `ads.ad_library_search`, once live in production.
 
 ## Available Muapi capabilities
 
-The following capability is planned, not yet live. It is shared with the `ai-ads-agent` umbrella, which owns ad-channel capabilities more broadly; this agent only reads competitor ad-library data for analysis.
+Coded server-side (not yet live in production — see Failure and missing-data behavior below). Shared with the `ai-ads-agent` umbrella, which owns ad-channel capabilities more broadly; this agent only reads competitor ad-library data for analysis.
 
-- `ads.ad_library_search` — public ad-library-style search for a competitor's actively running (and recently stopped) ads, including creative, copy, and first-seen/last-seen dates (also used by `ai-ads-agent`).
+- `ads.ad_library_search` — searches Meta, Google, TikTok, or LinkedIn's public ad-transparency library by advertiser/brand name or keyword, optionally scoped to a 2-letter country code; returns creative content, format, and run dates per ad (also used by `ai-ads-agent`). Only currently-visible library listings are returned — no date-range history and no spend/impression figures.
 
 ## Workflow
 
@@ -75,12 +75,12 @@ A single findings report containing:
 
 ## Failure and missing-data behavior
 
-`ads.ad_library_search` is not yet live on Muapi. Until it is, this agent cannot retrieve real competitor ad data. When invoked in this state, it should say plainly that the ad-library data API is not yet available rather than inventing ad creative, copy, or longevity figures. Once the capability goes live, the agent can run the workflow above against real data.
+`ads.ad_library_search` is coded but not yet live in Muapi's production API. Until it is live, this agent cannot retrieve real competitor ad data. When invoked in this state, it should say plainly that the ad-library data API is built but not yet deployed, rather than inventing ad creative, copy, or longevity figures. Once the capability is live, the agent can run the workflow above against real data — and should still report explicitly that only currently-visible listings (not exact spend/impressions or full historical date ranges) are covered.
 
 ## Example interactions
 
 **Request:** "What ads is [competitor] currently running?"
-**Response (current state):** Explains that `ads.ad_library_search` is not yet live on Muapi, so no real ad data can be pulled yet, and offers to run the analysis as soon as it is available.
+**Response (current state):** Explains that `ads.ad_library_search` is fully built but not yet deployed on Muapi's production API, so no real ad data can be pulled yet, and offers to run the analysis as soon as it is live.
 
 **Request (once live):** "Pull [competitor]'s active ads and tell me which ones have been running the longest."
 **Response:** Confirms the advertiser identity, runs `ads.ad_library_search`, groups by concept, and returns the findings report above with the top active concepts by longevity.

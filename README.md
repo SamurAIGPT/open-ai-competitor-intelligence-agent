@@ -23,7 +23,7 @@ This repo is the umbrella for anything an agency or in-house team would call "th
 | Agent | Does | Status |
 |---|---|---|
 | [Competitive Audit](agents/competitive-audit/SKILL.md) | Cross-cutting audit of a competitor combining SEO position, social presence, and review/reputation signals into one comparison report against the client | Coming Soon |
-| [Ad Library Mining](agents/ad-library-mining/SKILL.md) | Analyzes which ads a competitor is actively running — creative, messaging, and longevity as a signal of what's working | Coming Soon |
+| [Ad Library Mining](agents/ad-library-mining/SKILL.md) | Analyzes which ads a competitor is actively running — creative, messaging, and longevity as a signal of what's working | Blueprint |
 
 ## Required Muapi APIs
 
@@ -67,7 +67,7 @@ Both sub-agents are `read-only` — they gather and compare public signals into 
 
 ## Status and limitations
 
-Both sub-agents are Coming Soon. Each depends on the same non-media APIs (`seo.search_performance`, `ads.ad_library_search`, `social.read_posts`, `reputation.review_search`) that the sibling umbrellas — `ai-seo-agent`, `ai-ads-agent`, `ai-social-agent`, `ai-reputation-agent` — also need before they can go live. This repo will move to Blueprint/Live once those underlying capabilities are available on Muapi.
+**Ad Library Mining is Blueprint**: it only needs `ads.ad_library_search`, which is coded but not yet live on Muapi's production API — see its own `SKILL.md` for exact scope (currently-visible listings only, no spend/impression data). **Competitive Audit remains Coming Soon**: it needs all four of `seo.search_performance` (already live), `ads.ad_library_search` (coded, not live), `social.read_posts` (coded, not live), and `reputation.review_search` (not yet built) — the last of these, review/reputation data, is the one still-unstarted piece blocking this sub-agent specifically.
 
 ## Contributing
 

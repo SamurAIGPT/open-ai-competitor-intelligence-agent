@@ -4,9 +4,10 @@ slug: competitive-audit
 version: 1.0.0
 category: competitor-intelligence
 description: Cross-cutting audit of a named competitor combining SEO position, social presence, and review/reputation signals into one comparison report against the client.
-status: coming-soon
+status: blueprint
 muapi_capabilities:
-  - seo.search_performance
+  - seo.domain_overview
+  - seo.backlinks_history
   - social.read_posts
   - reputation.review_search
 required_connections:
@@ -37,22 +38,22 @@ Give an agency or in-house marketer a single, current-state comparison of a name
 
 ## Required connections
 
-- `muapi` — Muapi account and API key with access to the capabilities below, once live.
+- `muapi` — Muapi account and API key with access to the capabilities below.
 
 ## Available Muapi capabilities
 
-The following capabilities are planned, not yet live. They are shared with sibling umbrella repos, which own their respective channels individually; this agent only combines the signals into a comparison.
+These capabilities are shared with sibling umbrella repos, which own their respective channels individually; this agent only combines the signals into a comparison.
 
-- `seo.search_performance` — organic search visibility and ranking signals for a domain (also used standalone by `ai-seo-agent`).
-- `social.read_posts` — recent social account activity and engagement for a handle (also used standalone by `ai-social-agent`).
-- `reputation.review_search` — review volume, rating, and recent review activity across public review sources (also used standalone by `ai-reputation-agent`).
+- Organic search visibility for a domain — live via `POST /api/v1/seo-domain-overview` (traffic/keyword estimate) and `POST /api/v1/seo-backlinks-history` (authority/link-growth trend), tested 2026-09-09 (also used standalone by `ai-seo-agent`).
+- `social.read_posts` — recent social account activity and engagement for a handle. Live for tiktok, instagram, reddit (subreddit-level), and facebook; **not supported for linkedin** (no routed personal-post capability exists) — tested 2026-09-09 (also used standalone by `ai-social-agent`).
+- `reputation.review_search` — review volume, rating, and recent review activity. **Partially live:** Google Business Profile reviews only, via `POST /api/v1/seo-business-reviews`; Amazon, app-store, and Trustpilot/Tripadvisor sources are not yet wired up (also used standalone by `ai-reputation-agent`, see its `review-mining` SKILL.md for the same scoping).
 
 ## Workflow
 
 1. Confirm the competitor domain/handles and the client domain/handles resolve to the correct entities (disambiguate common names before pulling any data).
-2. Call `seo.search_performance` for both the competitor and the client domain over the requested window.
+2. Call `seo-domain-overview` and `seo-backlinks-history` for both the competitor and the client domain over the requested window.
 3. Call `social.read_posts` for both the competitor and the client's primary social accounts.
-4. Call `reputation.review_search` for both the competitor and the client across available public review sources.
+4. Call `seo-business-reviews` for both the competitor and the client (Google reviews only, per the current scoping above).
 5. Normalize each channel's results onto a comparable scale (e.g., relative visibility index, posting cadence + engagement rate, average rating + review volume trend).
 6. Identify the 2-4 largest gaps — the channels where the delta between client and competitor is largest in either direction.
 7. Draft the comparison report per the Output format below, flagging which findings are estimates vs. directly observed data.
@@ -81,12 +82,9 @@ A single comparison report containing:
 
 ## Failure and missing-data behavior
 
-The capabilities this agent depends on (`seo.search_performance`, `social.read_posts`, `reputation.review_search`) are not yet live on Muapi. Until they are, this agent cannot produce a real comparison report. When invoked in this state, it should say plainly that the underlying data APIs are not yet available rather than fabricating SEO rankings, social metrics, or review scores. Once any one capability goes live, the agent can produce a partial report covering that channel and should mark the others as unavailable.
+SEO (`seo-domain-overview`/`seo-backlinks-history`) and Social (`social.read_posts`, minus linkedin) are live and tested. Reputation is partial — only Google Business reviews are covered; if a competitor or client has no Google Business presence, or the audit needs Amazon/app-store/Trustpilot review data, mark Reputation as "no data" or "partial data" in the completeness note rather than fabricating a review score. Never fabricate SEO rankings, social metrics, or review scores for any channel that returns no data.
 
 ## Example interactions
 
 **Request:** "How does [competitor] compare to us on SEO, social, and reviews?"
-**Response (current state):** Explains that `seo.search_performance`, `social.read_posts`, and `reputation.review_search` are not yet live on Muapi, so no real comparison can be produced yet, and offers to run the audit as soon as they are.
-
-**Request (once live):** "Audit [competitor] against [client] for our QBR next week."
-**Response:** Confirms domains/handles, runs the three capability calls, and returns the comparison report above with the top gaps highlighted for discussion.
+**Response:** Confirms domains/handles, runs `seo-domain-overview`/`seo-backlinks-history` and `social.read_posts` for both (full data), attempts `seo-business-reviews` for both (Google reviews only — flagged as partial reputation coverage), and returns the comparison report above with the top gaps highlighted and the completeness note stating Reputation is Google-only.

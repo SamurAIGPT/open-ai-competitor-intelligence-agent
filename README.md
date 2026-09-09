@@ -22,7 +22,7 @@ This repo is the umbrella for anything an agency or in-house team would call "th
 
 | Agent | Does | Status |
 |---|---|---|
-| [Competitive Audit](agents/competitive-audit/SKILL.md) | Cross-cutting audit of a competitor combining SEO position, social presence, and review/reputation signals into one comparison report against the client | Coming Soon |
+| [Competitive Audit](agents/competitive-audit/SKILL.md) | Cross-cutting audit of a competitor combining SEO position, social presence, and review/reputation signals into one comparison report against the client | Blueprint |
 | [Ad Library Mining](agents/ad-library-mining/SKILL.md) | Analyzes which ads a competitor is actively running — creative, messaging, and longevity as a signal of what's working | Blueprint |
 
 ## Required Muapi APIs
@@ -67,7 +67,7 @@ Both sub-agents are `read-only` — they gather and compare public signals into 
 
 ## Status and limitations
 
-**Ad Library Mining is Blueprint**: it only needs `ads.ad_library_search`, which is coded but not yet live on Muapi's production API — see its own `SKILL.md` for exact scope (currently-visible listings only, no spend/impression data). **Competitive Audit remains Coming Soon**: it needs all four of `seo.search_performance` (already live), `ads.ad_library_search` (coded, not live), `social.read_posts` (coded, not live), and `reputation.review_search` (not yet built) — the last of these, review/reputation data, is the one still-unstarted piece blocking this sub-agent specifically.
+**Ad Library Mining is Blueprint**: it only needs `ads.ad_library_search`, which is coded but not yet callable end-to-end (the aggregator it routes through needs a vendor API key that hasn't been provisioned) — see its own `SKILL.md` for exact scope (currently-visible listings only, no spend/impression data). **Competitive Audit moved Coming Soon → Blueprint (2026-09-09)**: its SEO signal (`seo-domain-overview`/`seo-backlinks-history`) and social signal (`social.read_posts`, all platforms except linkedin) are both live and tested; its reputation signal (`seo-business-reviews`) is live but Google-only — Amazon/app-store/Trustpilot review data is not yet wired up. The sub-agent runs a real, partial comparison today rather than waiting on 100% channel coverage, with the reputation gap flagged explicitly in its completeness note.
 
 ## Contributing
 

@@ -1,6 +1,6 @@
 # AI Competitor Intelligence Agent
 
-An AI agent for competitive intelligence — cross-cutting audits combining SEO, ads, social, and review data into one competitor-vs-client comparison — backed by real data APIs.
+An AI agent for competitive intelligence — cross-cutting audits combining SEO, ads, social, review, and pricing data into one competitor-vs-client comparison — backed by real data APIs.
 
 Part of [Agency Agents OS](https://github.com/Anil-matcha/agency-agents-os), an open ecosystem of specialized AI agents for real business work.
 
@@ -24,6 +24,7 @@ This repo is the umbrella for anything an agency or in-house team would call "th
 |---|---|---|
 | [Competitive Audit](agents/competitive-audit/SKILL.md) | Cross-cutting audit of a competitor combining SEO position, social presence, and review/reputation signals into one comparison report against the client | Blueprint |
 | [Ad Library Mining](agents/ad-library-mining/SKILL.md) | Analyzes which ads a competitor is actively running — creative, messaging, and longevity as a signal of what's working | Blueprint |
+| [Price & Trial Monitoring](agents/price-trial-monitoring/SKILL.md) | Extracts a competitor's public pricing and free-trial details from their own site, and diffs against an earlier snapshot to catch changes | Blueprint |
 
 ## Required Muapi APIs
 
@@ -31,6 +32,7 @@ This repo is the umbrella for anything an agency or in-house team would call "th
 - `ads.ad_library_search` — public ad-library-style lookup of a competitor's actively running ads (see [`ai-ads-agent`](https://github.com/SamurAIGPT/ai-ads-agent)).
 - `social.read_posts` — competitor and client social account activity and engagement (see [`ai-social-agent`](https://github.com/SamurAIGPT/ai-social-agent)).
 - `reputation.review_search` — competitor and client review/reputation signals across public review sources (see [`ai-reputation-agent`](https://github.com/SamurAIGPT/ai-reputation-agent)).
+- `company.products` — extracts a competitor's own pricing/plan data by domain or direct URL. Owned by this repo.
 
 These capabilities are shared with the sibling umbrella repos above; this repo's sub-agents combine them into cross-channel comparison reports rather than owning any one channel.
 
@@ -63,11 +65,11 @@ Drop a sub-agent's `SKILL.md` into a Claude Code project's `.claude/skills/` dir
 
 ## Read-only vs. write actions
 
-Both sub-agents are `read-only` — they gather and compare public signals into a report. Neither publishes, files a complaint, responds to a review, or takes any action on a competitor's or client's own accounts.
+All sub-agents are `read-only` — they gather and compare public signals into a report. Neither publishes, files a complaint, responds to a review, or takes any action on a competitor's or client's own accounts.
 
 ## Status and limitations
 
-**Ad Library Mining is Blueprint**: it only needs `ads.ad_library_search`, which is coded but not yet callable end-to-end (the aggregator it routes through needs a vendor API key that hasn't been provisioned) — see its own `SKILL.md` for exact scope (currently-visible listings only, no spend/impression data). **Competitive Audit moved Coming Soon → Blueprint (2026-09-09)**: its SEO signal (`seo-domain-overview`/`seo-backlinks-history`) and social signal (`social.read_posts`, all platforms except linkedin) are both live and tested; its reputation signal (`seo-business-reviews`) is live but Google-only — Amazon/app-store/Trustpilot review data is not yet wired up. The sub-agent runs a real, partial comparison today rather than waiting on 100% channel coverage, with the reputation gap flagged explicitly in its completeness note.
+**Ad Library Mining is Blueprint**: it only needs `ads.ad_library_search`, which is coded but not yet callable end-to-end (the aggregator it routes through needs a vendor API key that hasn't been provisioned) — see its own `SKILL.md` for exact scope (currently-visible listings only, no spend/impression data). **Competitive Audit moved Coming Soon → Blueprint (2026-09-09)**: its SEO signal (`seo-domain-overview`/`seo-backlinks-history`) and social signal (`social.read_posts`, all platforms except linkedin) are both live and tested; its reputation signal (`seo-business-reviews`) is live but Google-only — Amazon/app-store/Trustpilot review data is not yet wired up. The sub-agent runs a real, partial comparison today rather than waiting on 100% channel coverage, with the reputation gap flagged explicitly in its completeness note. **Price & Trial Monitoring is Blueprint (added 2026-09-10)**: it only needs `company.products`, which is coded but not yet callable end-to-end (same aggregator/vendor-key blocker as Ad Library Mining) — see its own `SKILL.md` for exact scope (one-shot snapshot per call, diffed manually against a prior snapshot; no built-in history or scheduling).
 
 ## Contributing
 
